@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FridgeChef — recipes from what's in your fridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">FridgeChef</span>
+        <span class="brand-tagline">cook with what you've got</span>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button class="tab-btn is-active" data-tab="generate" role="tab">Generate</button>
+        <button class="tab-btn" data-tab="favorites" role="tab">Favorites <span class="tab-count" id="favCount"></span></button>
+        <button class="tab-btn" data-tab="shopping" role="tab">Shopping List <span class="tab-count" id="shopCount"></span></button>
+        <button class="tab-btn" data-tab="history" role="tab">History</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- TAB: GENERATE -->
+      <section id="tab-generate" class="tab-panel is-active">
+        <div class="hero">
+          <h1>Whatever's in the <em>fridge</em> becomes dinner.</h1>
+          <p>Tell FridgeChef what ingredients you have at home, and it proposes 3 possible recipes — with what's missing clearly marked.</p>
+        </div>
+
+        <div class="workspace">
+          <aside class="panel input-panel">
+            <div class="field-group">
+              <label for="ingredientInput">Available ingredients</label>
+              <div class="ingredient-entry">
+                <input type="text" id="ingredientInput" placeholder="e.g. eggs, tomatoes, cheese..." autocomplete="off" />
+                <button id="addIngredientBtn" type="button" class="btn-add" aria-label="Add ingredient">+</button>
+              </div>
+              <div id="ingredientTags" class="tag-row" aria-live="polite"></div>
+              <p class="hint">Press Enter or comma after each ingredient.</p>
+            </div>
+
+            <div class="field-group">
+              <label for="mealType">Meal type</label>
+              <select id="mealType">
+                <option value="any">Any</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="snack">Snack</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="maxTime">Maximum prep time</label>
+              <select id="maxTime">
+                <option value="no limit">No limit</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60">60 minutes</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="cuisine">Cuisine type</label>
+              <select id="cuisine">
+                <option value="any">Any</option>
+                <option value="italian">Italian</option>
+                <option value="asian">Asian</option>
+                <option value="mediterranean">Mediterranean</option>
+                <option value="mexican">Mexican</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <span class="label-like">Restrictions</span>
+              <div class="checkbox-row">
+                <label><input type="checkbox" value="vegetarian" class="restriction-cb" /> Vegetarian</label>
+                <label><input type="checkbox" value="gluten-free" class="restriction-cb" /> Gluten-free</label>
+                <label><input type="checkbox" value="dairy-free" class="restriction-cb" /> Dairy-free</label>
+              </div>
+            </div>
+
+            <button id="generateBtn" class="btn-primary" type="button">Generate recipes</button>
+            <p id="formError" class="error-msg" hidden></p>
+          </aside>
+
+          <section class="results-area">
+            <div id="loadingState" class="loading-state" hidden>
+              <div class="spinner" aria-hidden="true"></div>
+              <p>FridgeChef is cooking up ideas...</p>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+              <p>Add a few ingredients and press <strong>Generate recipes</strong> — results will appear here.</p>
+            </div>
+
+            <div id="recipeResults" class="recipe-grid"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- TAB: FAVORITES -->
+      <section id="tab-favorites" class="tab-panel">
+        <div class="panel-header">
+          <h2>Your favorite recipes</h2>
+          <p>Saved locally, in this browser.</p>
+        </div>
+        <div id="favoritesEmpty" class="empty-state">
+          <p>You don't have any saved recipes yet. Tap the star on a generated recipe to add it here.</p>
+        </div>
+        <div id="favoritesGrid" class="recipe-grid"></div>
+      </section>
+
+      <!-- TAB: SHOPPING LIST -->
+      <section id="tab-shopping" class="tab-panel">
+        <div class="panel-header">
+          <h2>Shopping list</h2>
+          <p>Automatically generated from the missing ingredients of your favorite recipes.</p>
+        </div>
+        <div id="shoppingEmpty" class="empty-state">
+          <p>No missing ingredients to buy — save favorite recipes to build the list automatically.</p>
+        </div>
+        <ul id="shoppingList" class="shopping-list"></ul>
+      </section>
+
+      <!-- TAB: HISTORY -->
+      <section id="tab-history" class="tab-panel">
+        <div class="panel-header">
+          <h2>Search history</h2>
+          <p>Your latest ingredient combinations you asked recipes for.</p>
+        </div>
+        <div id="historyEmpty" class="empty-state">
+          <p>You haven't generated any recipes yet.</p>
+        </div>
+        <ul id="historyList" class="history-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
